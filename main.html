@@ -1,16 +1,86 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Login Form</title>
+  <style>
+    #existing {
+      display: none; /* Hidden by default */
+    }
+  </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+
+  <h1>Login Form</h1>
+
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Username" required /><br><br>
+    <input type="password" id="password" placeholder="Password" required /><br><br>
+    
+    <label>
+      <input type="checkbox" id="checkbox" />
+      Remember me.
+    </label><br><br>
+
+    <input type="submit" id="submit" value="Submit" />
+  </form>
+
+  <br>
+
+  <button id="existing">Login as existing user</button>
+
+  <script>
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const rememberCheckbox = document.getElementById("checkbox");
+    const submitButton = document.getElementById("submit");
+    const existingButton = document.getElementById("existing");
+
+    const savedUsername = localStorage.getItem("savedUsername");
+    const savedPassword = localStorage.getItem("savedPassword");
+
+    // If credentials exist in localStorage, show existing user button
+    if (savedUsername && savedPassword) {
+      existingButton.style.display = "inline-block";
+    }
+
+    // Handle form submission
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+
+      alert("Logged in as " + username);
+
+      if (rememberCheckbox.checked) {
+        localStorage.setItem("savedUsername", username);
+        localStorage.setItem("savedPassword", password);
+      } else {
+        localStorage.removeItem("savedUsername");
+        localStorage.removeItem("savedPassword");
+      }
+
+      // Show or hide existing button based on saved state
+      if (localStorage.getItem("savedUsername") && localStorage.getItem("savedPassword")) {
+        existingButton.style.display = "inline-block";
+      } else {
+        existingButton.style.display = "none";
+      }
+
+      // Optionally reset the form
+      // e.target.reset(); 
+    });
+
+    // Handle existing user login
+    existingButton.addEventListener("click", function() {
+      const storedUser = localStorage.getItem("savedUsername");
+      if (storedUser) {
+        alert("Logged in as " + storedUser);
+      }
+    });
+  </script>
 
 </body>
-
 </html>
+
